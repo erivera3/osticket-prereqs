@@ -2,30 +2,27 @@
   <img src="https://i.imgur.com/Clzj7Xs.png" alt="osTicket logo" width="300">
 </p>
 
-<h1 align="center">osTicket: Prerequisites and Installation</h1>
-This project demonstrates the installation and configuration of osTicket on a Windows 10 virtual machine in Microsoft Azure, focusing on web server setup, dependency management, and database integration.
+<h1 align="center">osTicket Deployment on Azure (Windows 10)</h1>
+
+This project demonstrates the deployment of osTicket on a Windows 10 virtual machine in Microsoft Azure, including web server configuration, dependency resolution, and database integration.
 
 ---
 
 ## 🎯 Goals & Objectives
 
-The goal of this project was to install osTicket and understand how web applications depend on services like IIS, PHP, and MySQL.
-
-By the end of this lab, I aimed to:
-
-- Deploy a Windows 10 virtual machine in Azure  
-- Install and configure IIS with CGI  
+- Deploy a Windows 10 VM in Azure  
+- Configure IIS with CGI support  
 - Install and register PHP with IIS  
 - Install and configure MySQL  
-- Deploy osTicket into IIS  
+- Deploy osTicket in IIS  
 - Resolve dependency issues  
-- Verify a working ticketing system  
+- Validate full ticketing system functionality  
 
 ---
 
 ## 📌 Overview
 
-In this project, I built a Windows-based environment in Azure to host osTicket. The focus was on configuring required services, resolving setup issues, and validating that the system works end-to-end.
+Built a Windows-based hosting environment for osTicket in Azure. The focus was on configuring required services, resolving setup issues, and validating that the application works end-to-end.
 
 ---
 
@@ -44,7 +41,7 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 
 ## 💻 Environment
 
-- Windows 10 Virtual Machine (`osticket-vm`)  
+- Windows 10 VM (`osticket-vm`)  
 - IIS with CGI enabled  
 - PHP installed in `C:\PHP`  
 - MySQL database  
@@ -55,8 +52,9 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 ## ⚙️ Implementation
 
 ### 1. Virtual Machine Setup
-- Created a Windows 10 VM in Azure  
-- Connected via Remote Desktop  
+
+- Created and configured a Windows 10 VM in Azure  
+- Connected via RDP  
 
 <p align="center">
   <img src="images/vm-setup.png" width="700">
@@ -64,16 +62,10 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 
 ---
 
-### 2. IIS Configuration
-- Enabled IIS and CGI to support PHP applications  
+### 2. PHP Configuration (Issue → Resolution)
 
-<p align="center">
-  <img src="images/iis-installation.png" width="700">
-</p>
-
----
-
-### 3. PHP Registration (Problem → Fix)
+- IIS initially unable to process PHP  
+- Registered PHP using `php-cgi.exe`  
 
 <table align="center">
   <tr>
@@ -90,29 +82,13 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 
 ---
 
-### 4. Dependency Resolution
+### 3. MySQL Setup & Database Verification
 
-- Initial setup showed missing PHP extensions  
-- Enabled required extensions to proceed  
-
-<p align="center">
-  <img src="images/osticket-errors.png" width="700">
-</p>
+- Installed MySQL and confirmed service was running  
+- Created osTicket database using HeidiSQL  
 
 <p align="center">
-  <img src="images/osticket-ready.png" width="700">
-</p>
-
----
-
-### 5. MySQL Configuration
-
-- Installed MySQL  
-- Verified service was running  
-- Created database  
-
-<p align="center">
-  <img src="images/mysql-service-running.png" width="700">
+  <img src="images/mysql-installation.png" width="700">
 </p>
 
 <p align="center">
@@ -121,32 +97,28 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 
 ---
 
-### 6. osTicket Installation
+### 4. osTicket Installation
 
-- Completed installation via browser  
+- Completed installation through browser interface  
+- Verified successful deployment  
 
 <p align="center">
   <img src="images/osticket-installed.png" width="700">
 </p>
 
-- Updated configuration file permissions  
-
-<p align="center">
-  <img src="images/cleanup.png" width="700">
-</p>
-
 ---
 
-### 7. System Validation
+### 5. System Validation
 
-- Verified system functionality from both user and admin perspectives  
+- Logged into admin panel  
+- Created and verified ticket workflow  
 
 <p align="center">
-  <img src="images/osticket-user-portal.png" width="700">
+  <img src="images/osticket-admin-login.png" width="700">
 </p>
 
 <p align="center">
-  <img src="images/osticket-staff-panel.png" width="700">
+  <img src="images/osticket-create-ticket.png" width="700">
 </p>
 
 ---
@@ -154,31 +126,30 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 ## 🔍 Troubleshooting
 
 ### PHP Not Registered
-- Problem: IIS could not process PHP  
-- Fix: Registered PHP using `php-cgi.exe`  
+- **Problem:** IIS could not execute PHP  
+- **Fix:** Registered PHP using FastCGI (`php-cgi.exe`)  
 
-### Missing Extensions
-- Problem: osTicket setup blocked by missing dependencies  
-- Fix: Enabled required PHP extensions  
+### Dependency Issues
+- **Problem:** osTicket installer blocked due to missing PHP components  
+- **Fix:** Enabled required PHP extensions  
 
 ### Database Setup
-- Problem: Application required backend database  
-- Fix: Installed MySQL and created database  
+- **Problem:** Application required backend database  
+- **Fix:** Installed MySQL and configured database via HeidiSQL  
 
 ---
 
 ## 📌 Lessons Learned
 
-- Web applications depend on multiple layers (IIS, PHP, database)  
-- Misconfiguration is the most common failure point  
-- Dependency errors must be resolved before installation  
-- Verifying services (like MySQL) is critical  
-- Troubleshooting requires isolating one layer at a time  
+- Web applications rely on multiple layers (IIS, PHP, database)  
+- Most failures are configuration-related, not installation-related  
+- Dependency validation is critical before deployment  
+- Each layer must be tested independently  
 
 ---
 
 ## 💭 Key Takeaways
 
-This project showed that deploying a web application is not just installation—it requires configuring the underlying services correctly.
+Deploying a web application requires proper configuration of underlying services, not just installation.
 
-Most issues came from missing dependencies or configuration gaps, reinforcing the importance of validating each layer before moving forward.
+This project reinforced the importance of troubleshooting systematically and validating each component before moving forward.
