@@ -5,7 +5,7 @@
 <h1 align="center">osTicket: Prerequisites and Installation</h1>
 
 <p>
-  This project demonstrates the installation and initial configuration of osTicket, an open-source help desk ticketing system, within a Windows 10 virtual machine hosted in Microsoft Azure. The lab focused on preparing the required web server environment, installing dependencies, configuring the application, and verifying that the help desk platform was operational.
+  This project demonstrates the installation and initial configuration of osTicket, an open-source help desk ticketing system, within a Windows 10 virtual machine hosted in Microsoft Azure. The lab focused on preparing the required web server environment, installing dependencies, configuring the application, and verifying that the platform was operational.
 </p>
 
 <hr>
@@ -25,7 +25,8 @@
   <li>Deploy osTicket into the IIS web root</li>
   <li>Enable the required PHP extensions for osTicket</li>
   <li>Configure the application and connect it to a MySQL database</li>
-  <li>Verify successful installation and perform basic post-installation cleanup</li>
+  <li>Verify successful installation from both the staff and end-user interfaces</li>
+  <li>Perform basic post-installation cleanup and hardening</li>
 </ul>
 
 <hr>
@@ -37,7 +38,7 @@
 </p>
 
 <p>
-  This project helped reinforce how web applications depend on multiple services working together, including the web server, PHP runtime, database engine, file permissions, and application configuration.
+  This project reinforced how web applications depend on multiple layers working together, including the operating system, web server, runtime environment, database engine, application files, permissions, and final validation through both administrative and customer-facing interfaces.
 </p>
 
 <hr>
@@ -121,16 +122,48 @@
 </ul>
 
 <p>
-  These steps established the web server environment and prepared IIS to run PHP-based applications.
+  These steps established the web server environment and prepared IIS to support PHP-based applications.
 </p>
 
 <p align="center">
   <img src="images/iis-installation.png" alt="IIS and CGI Installation" width="80%" />
 </p>
 
+<p align="center">
+  <img src="images/php-folder.png" alt="PHP Folder" width="80%" />
+</p>
+
 <hr>
 
-<h3>4. Installing and Configuring MySQL</h3>
+<h3>4. Registering PHP in IIS</h3>
+
+<ul>
+  <li>Opened IIS as an administrator</li>
+  <li>Reviewed PHP Manager before registration</li>
+  <li>Registered PHP by pointing IIS to <code>C:\PHP\php-cgi.exe</code></li>
+  <li>Restarted IIS to apply the configuration</li>
+</ul>
+
+<p>
+  This connected the PHP runtime to IIS so PHP files could be executed properly through the web server.
+</p>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="images/php-not-registered.png" alt="PHP Not Registered in IIS" width="100%"><br>
+      <sub>Before: PHP Not Registered</sub>
+    </td>
+    <td align="center">
+      <img src="images/php-registration.png" alt="PHP Registered in IIS" width="100%"><br>
+      <sub>After: PHP Registered in IIS</sub>
+    </td>
+  </tr>
+</table>
+
+<hr>
+
+<h3>5. Installing MySQL</h3>
 
 <ul>
   <li>Installed MySQL 5.5.62</li>
@@ -139,30 +172,11 @@
 </ul>
 
 <p>
-  MySQL was required to store osTicket’s application data, settings, and ticket records.
+  MySQL provided the backend database required to store osTicket data, settings, and ticket records.
 </p>
 
 <p align="center">
   <img src="images/mysql-installation.png" alt="MySQL Installation" width="80%" />
-</p>
-
-<hr>
-
-<h3>5. Registering PHP in IIS</h3>
-
-<ul>
-  <li>Opened IIS as an administrator</li>
-  <li>Registered PHP using PHP Manager</li>
-  <li>Pointed IIS to <code>C:\PHP\php-cgi.exe</code></li>
-  <li>Restarted IIS to apply the configuration</li>
-</ul>
-
-<p>
-  This step connected the PHP runtime to IIS so PHP files could be executed properly through the web server.
-</p>
-
-<p align="center">
-  <img src="images/php-registration.png" alt="PHP Registration in IIS" width="80%" />
 </p>
 
 <hr>
@@ -178,7 +192,7 @@
 </ul>
 
 <p>
-  This placed the application inside the IIS web root and made it accessible through the local web server.
+  This placed the application in the IIS web root and made it accessible through the local web server.
 </p>
 
 <p align="center">
@@ -187,26 +201,43 @@
 
 <hr>
 
-<h3>7. Enabling Required PHP Extensions</h3>
+<h3>7. Resolving Missing PHP Extensions</h3>
 
 <ul>
-  <li>Reviewed the osTicket setup page and identified missing extensions</li>
-  <li>Enabled the required extensions in PHP Manager:
+  <li>Opened the osTicket installer page and reviewed the prerequisite warnings</li>
+  <li>Identified missing or disabled PHP modules</li>
+  <li>Enabled the required extensions through PHP Manager:
     <ul>
       <li><code>php_imap.dll</code></li>
       <li><code>php_intl.dll</code></li>
       <li><code>php_opcache.dll</code></li>
     </ul>
   </li>
-  <li>Refreshed the osTicket site and confirmed the warnings were cleared</li>
+  <li>Restarted IIS and refreshed the installer page</li>
 </ul>
 
 <p>
-  This step highlighted that successful application deployment depends on both the base runtime and the correct feature set being enabled.
+  This demonstrated that successful application deployment depends not only on installing PHP, but also on enabling the correct runtime features required by the application.
 </p>
 
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="images/osticket-errors.png" alt="osTicket Missing Extensions" width="100%"><br>
+      <sub>Before: Missing PHP Extensions</sub>
+    </td>
+    <td align="center">
+      <img src="images/php-extensions.png" alt="PHP Extensions Enabled" width="100%"><br>
+      <sub>Fix: Required Extensions Enabled</sub>
+    </td>
+  </tr>
+</table>
+
 <p align="center">
-  <img src="images/php-extensions.png" alt="PHP Extensions for osTicket" width="80%" />
+  <img src="images/osticket-ready.png" alt="osTicket Ready for Installation" width="80%" />
+</p>
+<p align="center">
+  <sub>Installer page showing the system ready to proceed.</sub>
 </p>
 
 <hr>
@@ -215,9 +246,8 @@
 
 <ul>
   <li>Renamed <code>ost-sampleconfig.php</code> to <code>ost-config.php</code></li>
-  <li>Updated permissions on <code>ost-config.php</code></li>
-  <li>Disabled inheritance</li>
-  <li>Assigned broader access temporarily so setup could complete</li>
+  <li>Disabled inheritance on the configuration file</li>
+  <li>Adjusted permissions temporarily so setup could complete</li>
 </ul>
 
 <p>
@@ -252,9 +282,8 @@
 
 <ul>
   <li>Entered the help desk name and default email address</li>
-  <li>Entered MySQL database information</li>
+  <li>Entered the MySQL database information</li>
   <li>Completed the installation through the browser</li>
-  <li>Verified access to the admin login page and end-user portal</li>
 </ul>
 
 <p>
@@ -265,20 +294,46 @@
   <img src="images/osticket-installed.png" alt="osTicket Successfully Installed" width="80%" />
 </p>
 
+<p align="center">
+  <img src="images/osticket-staff-panel.png" alt="osTicket Staff Control Panel" width="80%" />
+</p>
+<p align="center">
+  <sub>Staff control panel showing successful login and active system functionality.</sub>
+</p>
+
+<p align="center">
+  <img src="images/osticket-user-portal.png" alt="osTicket User Portal" width="80%" />
+</p>
+<p align="center">
+  <sub>End-user portal demonstrating the customer-facing support interface.</sub>
+</p>
+
 <hr>
 
 <h2>🔍 Troubleshooting</h2>
 
-<h3>Missing PHP Extensions</h3>
+<h3>PHP Not Registered in IIS</h3>
 
 <ul>
-  <li><strong>Problem:</strong> osTicket setup reported missing required extensions</li>
-  <li><strong>Cause:</strong> PHP was installed, but necessary modules were not yet enabled in IIS</li>
-  <li><strong>Fix:</strong> Enabled the required PHP extensions through PHP Manager and refreshed the site</li>
+  <li><strong>Problem:</strong> PHP Manager showed that PHP was not enabled and no executable path was available</li>
+  <li><strong>Cause:</strong> IIS had not yet been pointed to the PHP runtime</li>
+  <li><strong>Fix:</strong> Registered <code>C:\PHP\php-cgi.exe</code> through PHP Manager and restarted IIS</li>
 </ul>
 
 <p>
-  This reinforced that application installation problems are often dependency problems rather than application problems.
+  This reinforced that installing a runtime is not enough unless the web server is explicitly configured to use it.
+</p>
+
+<h3>Missing PHP Extensions</h3>
+
+<ul>
+  <li><strong>Problem:</strong> osTicket setup reported missing prerequisite extensions</li>
+  <li><strong>Cause:</strong> PHP was installed, but required modules were not yet enabled</li>
+  <li><strong>Fix:</strong> Enabled the required extensions in PHP Manager and refreshed the installer page</li>
+</ul>
+
+<p>
+  This showed that application installation problems are often dependency problems rather than application problems.
 </p>
 
 <h3>Configuration File Access</h3>
@@ -290,7 +345,7 @@
 </ul>
 
 <p>
-  This showed how file permissions can directly affect installation success.
+  This demonstrated how file permissions can directly affect application deployment.
 </p>
 
 <hr>
@@ -301,7 +356,8 @@
   <li>Used Azure to simulate a realistic cloud-hosted support system environment</li>
   <li>Used IIS with CGI to support PHP-based application hosting on Windows</li>
   <li>Created a dedicated <code>C:\PHP</code> directory to keep the PHP runtime organized and separate</li>
-  <li>Used HeidiSQL to simplify MySQL database creation and management</li>
+  <li>Used HeidiSQL to simplify MySQL database creation and verification</li>
+  <li>Validated both the staff and end-user interfaces to confirm the application was fully operational</li>
   <li>Performed post-installation cleanup to reduce unnecessary exposure of setup files</li>
 </ul>
 
@@ -314,6 +370,7 @@
   <li>Configuration file permissions should be tightened after installation completes</li>
   <li>Using readable passwords in documentation is not a real-world best practice</li>
   <li>Administrative credentials and database credentials should be protected using secure storage practices</li>
+  <li>Post-installation cleanup is part of securing an application, not just finishing it</li>
 </ul>
 
 <hr>
@@ -321,9 +378,10 @@
 <h2>🌍 Real-World Relevance</h2>
 
 <ul>
-  <li>Help desk platforms are commonly used in IT environments to manage support requests and workflows</li>
+  <li>Help desk platforms are commonly used in IT environments to manage support requests and internal workflows</li>
   <li>Installing osTicket reinforces how web applications depend on the web server, runtime, database, and file permissions working together</li>
-  <li>This type of deployment builds practical experience relevant to system administration, IT support, and entry-level infrastructure roles</li>
+  <li>This type of deployment builds practical experience relevant to IT support, system administration, and entry-level infrastructure roles</li>
+  <li>Validating both backend and frontend access reflects the type of end-to-end verification required in real environments</li>
 </ul>
 
 <hr>
@@ -332,10 +390,10 @@
 
 <ul>
   <li>Web application deployment depends heavily on prerequisite components being installed in the correct order</li>
-  <li>Missing runtime extensions can prevent an application from functioning even when the main software is installed</li>
-  <li>File permissions are a critical part of successful setup and post-installation hardening</li>
-  <li>Installing an application is only part of the work; cleanup and tightening permissions matter too</li>
-  <li>Understanding dependencies makes troubleshooting much faster and more methodical</li>
+  <li>Missing runtime extensions can prevent an application from functioning even when the main software is already present</li>
+  <li>File permissions are a critical part of both successful setup and post-installation hardening</li>
+  <li>Installing an application is only part of the work; validation and cleanup matter too</li>
+  <li>Understanding dependencies makes troubleshooting faster and more methodical</li>
 </ul>
 
 <hr>
@@ -343,11 +401,11 @@
 <h2>💭 Key Takeaways</h2>
 
 <p>
-  Before this lab, it would have been easy to think of installing a help desk platform as just running an installer. In practice, the process required coordinating IIS, PHP, MySQL, application files, permissions, and browser-based configuration.
+  Before this lab, it would have been easy to think of installing a help desk platform as simply running an installer. In practice, the process required coordinating IIS, PHP, MySQL, application files, permissions, and browser-based configuration.
 </p>
 
 <p>
-  This project helped me better understand how multiple infrastructure components support a single business application and how small missing pieces can prevent the entire system from working.
+  This project helped me better understand how multiple infrastructure components support a single business application and how small missing pieces can prevent the entire system from working correctly.
 </p>
 
 <hr>
@@ -360,7 +418,7 @@
 </ul>
 
 <p>
-  These steps reduced unnecessary risk after installation and left the application in a more secure state.
+  These steps reduced unnecessary exposure after installation and left the application in a more secure state.
 </p>
 
 <p align="center">
