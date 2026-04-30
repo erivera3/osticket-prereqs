@@ -2,30 +2,23 @@
   <img src="https://i.imgur.com/Clzj7Xs.png" alt="osTicket logo" width="300">
 </p>
 
-<h1 align="center">osTicket Deployment in Azure (Web Application Simulation)</h1>
-This project demonstrates the deployment and configuration of a web-based ticketing system using osTicket on a Windows 10 virtual machine in Microsoft Azure, focusing on web server setup, dependency management, and backend integration.
+<h1 align="center">osTicket Deployment in Azure (Multi-Service Application Troubleshooting)</h1>
+
+This project focuses on deploying a working web application in Azure while resolving failures across multiple system layers (IIS, PHP, MySQL).
+
+The objective was not just deployment, but restoring functionality when dependencies failed.
 
 ---
 
-## 🎯 Goals & Objectives
+## 📌 Context
 
-The goal of this project was to deploy a functional web application and understand how services like IIS, PHP, and MySQL work together to support it.
+A Windows-based environment was deployed in Azure to host osTicket. The system required coordination between:
 
-By the end of this lab, I aimed to:
+- IIS (web server)
+- PHP (application processing)
+- MySQL (database backend)
 
-- Deploy a Windows 10 virtual machine in Azure  
-- Configure IIS with CGI support  
-- Install and integrate PHP with IIS  
-- Install and configure MySQL  
-- Deploy osTicket into a web server environment  
-- Resolve dependency and configuration issues  
-- Validate a fully working ticketing system  
-
----
-
-## 📌 Overview
-
-In this project, I built a Windows-based environment in Azure to host osTicket. The focus was on understanding how web applications rely on multiple system layers and how misconfigurations at any layer can break the entire system.
+Failure in any layer prevented the application from working.
 
 ---
 
@@ -55,9 +48,16 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 ## ⚙️ Implementation
 
 ### 1. Infrastructure Setup
-- Created a Windows 10 VM in Azure  
-- Connected via Remote Desktop  
-- Verified system accessibility  
+
+**Problem:**  
+No working environment to host application.
+
+**Decision:**  
+Deploy Windows VM in Azure and establish remote access.
+
+**Result:**  
+- Functional system accessible via RDP  
+- Base environment ready for service configuration  
 
 <p align="center">
   <img src="images/vm-setup.png" width="700">
@@ -65,10 +65,20 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 
 ---
 
-### 2. PHP Configuration (Issue → Resolution)
-- IIS initially unable to process PHP requests  
-- Identified missing PHP registration  
-- Configured FastCGI to integrate PHP with IIS  
+### 2. PHP Execution Failure (Critical Blocker)
+
+**Problem:**  
+IIS could not process PHP files, blocking application execution.
+
+**Root Cause:**  
+PHP was installed but not registered with IIS.
+
+**Decision:**  
+Manually configure FastCGI and link `php-cgi.exe`.
+
+**Result:**  
+- PHP execution restored  
+- Web server able to process application requests  
 
 <table align="center">
   <tr>
@@ -85,10 +95,17 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 
 ---
 
-### 3. MySQL Setup & Database Verification
-- Installed MySQL and verified service status  
-- Created osTicket database using HeidiSQL  
-- Confirmed tables were generated during installation  
+### 3. Database Dependency Setup
+
+**Problem:**  
+Application required database backend to function.
+
+**Decision:**  
+Install MySQL and manually create database using HeidiSQL.
+
+**Result:**  
+- Database created and accessible  
+- Tables successfully generated during installation  
 
 <p align="center">
   <img src="images/mysql-installation.png" width="700">
@@ -100,10 +117,17 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 
 ---
 
-### 4. osTicket Installation
-- Deployed osTicket files into IIS web root  
-- Completed installation through browser interface  
-- Verified successful setup  
+### 4. Application Deployment
+
+**Problem:**  
+Application not yet integrated into web environment.
+
+**Decision:**  
+Deploy osTicket into IIS web root and complete installation via browser.
+
+**Result:**  
+- Application successfully installed  
+- Web interface accessible  
 
 <p align="center">
   <img src="images/osticket-installed.png" width="700">
@@ -112,9 +136,17 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 ---
 
 ### 5. System Validation
-- Accessed admin panel  
-- Verified authentication  
-- Created and tested ticket workflow  
+
+**Problem:**  
+Need to confirm system functionality across all layers.
+
+**Decision:**  
+Test authentication and simulate ticket workflow.
+
+**Result:**  
+- Admin access verified  
+- Ticket creation and handling confirmed  
+- Full application functionality validated  
 
 <p align="center">
   <img src="images/osticket-admin-login.png" width="700">
@@ -126,64 +158,57 @@ In this project, I built a Windows-based environment in Azure to host osTicket. 
 
 ---
 
-## 🔍 Troubleshooting
+## 🔍 Key Failures & Resolutions
 
-### PHP Integration Issue
-- Problem: IIS could not execute PHP files  
-- Cause: PHP was not registered with FastCGI  
-- Fix: Linked `php-cgi.exe` in IIS PHP Manager  
+### PHP Not Executing
+- Cause: Missing FastCGI configuration  
+- Fix: Manual registration of PHP with IIS  
 
-### Dependency Errors
-- Problem: osTicket installer blocked due to missing PHP components  
-- Cause: Required extensions not enabled  
-- Fix: Enabled necessary PHP extensions  
+### Missing PHP Dependencies
+- Cause: Required extensions disabled  
+- Fix: Enabled extensions required by osTicket  
 
-### Database Configuration
-- Problem: Application required backend database connectivity  
-- Cause: No database configured initially  
-- Fix: Installed MySQL and created database using HeidiSQL  
+### Database Not Configured
+- Cause: No backend defined  
+- Fix: Created MySQL database and connected application  
 
 ---
 
-## 🧠 Design Decisions
+## 🧠 Decisions That Mattered
 
-- Used IIS instead of Apache to align with Windows-based environments  
-- Installed PHP manually to better understand configuration process  
-- Verified each dependency before proceeding to the next step  
-- Used HeidiSQL for direct database visibility and validation  
-
----
-
-## 🛡️ System Awareness
-
-- Observed how multiple services (IIS, PHP, MySQL) must interact correctly  
-- Noted that failure in one layer prevents application functionality  
-- Reinforced importance of verifying services before troubleshooting  
+- Chose IIS to align with Windows-based environments  
+- Configured PHP manually to understand integration points  
+- Validated each dependency before proceeding  
+- Used direct database access (HeidiSQL) for verification  
 
 ---
 
-## 🌍 Real-World Relevance
+## 🛡️ System Understanding
 
-- Web applications depend on properly configured backend services  
-- IIS + PHP is a common stack in Windows environments  
-- Database integration is essential for dynamic applications  
-- Troubleshooting multi-layer systems is a core IT skill  
+- Application stability depends on all service layers functioning correctly  
+- Failures often occur at integration points, not installation  
+- Troubleshooting requires isolating each layer independently  
 
 ---
 
-## 📌 Lessons Learned
+## 📌 Key Lessons
 
-- Most failures occur due to misconfiguration, not installation  
+- Most failures are configuration issues, not missing software  
 - Dependency validation must happen before deployment  
-- Each service should be tested independently  
-- Small errors can prevent entire systems from functioning  
+- Fixing one layer does not guarantee full system functionality  
+- Multi-service environments require step-by-step isolation  
 
 ---
 
-## 💭 Key Takeaways
+## Summary
 
-Before this lab, I approached web applications as single systems. This project showed that they are dependent on multiple interconnected services.
+This project demonstrates the ability to diagnose and resolve failures across a multi-layer application stack.
 
-Issues like PHP misconfiguration or missing dependencies required step-by-step troubleshooting rather than assumptions.
+Instead of following a linear installation, this required:
 
-This experience reinforced the importance of isolating problems, validating each layer, and understanding how systems interact in a real-world environment.
+- Identifying where execution failed (IIS vs PHP vs MySQL)  
+- Restoring functionality at each layer  
+- Validating full system behavior after integration  
+
+**Result:**  
+A working application environment built by resolving dependency failures, not just completing installation steps.
