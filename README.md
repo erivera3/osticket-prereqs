@@ -14,14 +14,14 @@ I installed osTicket on a Windows virtual machine in Azure and worked through th
 - Created the database and completed the osTicket installer.
 - Checked administrative access and a sample ticket workflow.
 
-**Why it matters for IT support:** Shows how I isolate application dependencies, check configuration, and document a repeatable setup.
+**Skills practiced:** Application troubleshooting, dependency checks, configuration validation, and technical documentation.
 
-Continue with [help desk configuration](https://github.com/erivera3/post-install-config), then [ticket lifecycle practice](https://github.com/erivera3/ticket-lifecycle).
+**Related labs:** [Help desk configuration](https://github.com/erivera3/post-install-config), then [ticket lifecycle practice](https://github.com/erivera3/ticket-lifecycle).
 
 [Back to my portfolio](https://github.com/erivera3)
 
 <details>
-<summary><strong>Open the full walkthrough, screenshots, decisions, and lessons</strong></summary>
+<summary><strong>Walkthrough, screenshots, and troubleshooting notes</strong></summary>
 
 ## 📌 Context
 
@@ -215,7 +215,7 @@ Test authentication and simulate ticket workflow.
 
 ## Summary
 
-This project demonstrates the ability to diagnose and resolve failures across a multi-layer application stack.
+I diagnosed configuration issues across IIS, PHP, and MySQL and checked the application after integrating the services.
 
 Instead of following a linear installation, this required:
 
