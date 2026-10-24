@@ -2,13 +2,26 @@
   <img src="https://i.imgur.com/Clzj7Xs.png" alt="osTicket logo" width="300">
 </p>
 
-<h1 align="center">osTicket Deployment in Azure (Multi-Service Application Troubleshooting)</h1>
+# osTicket Deployment in Azure
 
-This project focuses on deploying a working web application in Azure while resolving failures across multiple system layers (IIS, PHP, MySQL).
+**Project context:** Structured technical lab
 
-The objective was not just deployment, but restoring functionality when dependencies failed.
+I installed osTicket on a Windows virtual machine in Azure and worked through the IIS, PHP, and MySQL dependencies needed to reach a working help desk interface.
 
----
+## At a glance
+
+- Configured IIS and connected PHP through FastCGI.
+- Created the database and completed the osTicket installer.
+- Checked administrative access and a sample ticket workflow.
+
+**Why it matters for IT support:** Shows how I isolate application dependencies, check configuration, and document a repeatable setup.
+
+Continue with [help desk configuration](https://github.com/erivera3/post-install-config), then [ticket lifecycle practice](https://github.com/erivera3/ticket-lifecycle).
+
+[Back to my portfolio](https://github.com/erivera3)
+
+<details>
+<summary><strong>Open the full walkthrough, screenshots, decisions, and lessons</strong></summary>
 
 ## 📌 Context
 
@@ -193,7 +206,7 @@ Test authentication and simulate ticket workflow.
 
 ## 📌 Key Lessons
 
-- Most failures are configuration issues, not missing software  
+- The failures documented here involved configuration and application dependencies  
 - Dependency validation must happen before deployment  
 - Fixing one layer does not guarantee full system functionality  
 - Multi-service environments require step-by-step isolation  
@@ -212,3 +225,5 @@ Instead of following a linear installation, this required:
 
 **Result:**  
 A working application environment built by resolving dependency failures, not just completing installation steps.
+
+</details>
